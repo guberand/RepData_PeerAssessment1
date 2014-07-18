@@ -1,10 +1,10 @@
 
 ##Title: "ReproducibleResearchPeerAssessment1"
 
-library(knitr)
 
 ###Reading the activity data
 ```{r}
+library(knitr)
 url<-"https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
 if(!file.exists("ActivityMonitorData.zip")){
   download.file(url, destfile="ActivityMonitorData.zip")  
@@ -110,6 +110,8 @@ Mean Value difference from first part of the assignment is
 Median Value difference from first part of the assignment is 
 **`r MedianOfStepsPerDay2-MedianOfStepsPerDay1`**
 
+The impact of filling in missing data is median is closer to mean
+and between the 2 datasets the mean number of steps is the same
 
 
 ###Finding Day of a week and Weekday or a weekend and adding the columns to filled-in activity data.frame
