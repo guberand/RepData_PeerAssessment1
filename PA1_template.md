@@ -2,7 +2,8 @@
 ##Title: "ReproducibleResearchPeerAssessment1"
 
 ###Reading the activity data
-```{r}
+
+```r
 url<-"https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
 if(!file.exists("ActivityMonitorData.zip")){
   download.file(url, destfile="ActivityMonitorData.zip")  
@@ -15,52 +16,61 @@ ActivityData1$date<-as.POSIXct(ActivityData1$date)
 
 
 ###Creating data.frame with the total number of steps taken each day using the read activity data
-```{r,echo=TRUE}
-StepsPerDay1<-aggregate(steps~date,ActivityData1,sum)
 
+```r
+StepsPerDay1<-aggregate(steps~date,ActivityData1,sum)
 ```
 
 
 ###plotting Histogram of Total number of Steps taken per day over the 2-month period
-```{r,echo=TRUE}
+
+```r
 library(ggplot2)
 qplot(steps,data=StepsPerDay1,geom=("histogram"),binwidth=1000)
 ```
 
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3.png) 
+
 
 ###Mean and Median calculation
-```{r,echo=TRUE}
+
+```r
 MedianOfStepsPerDay1<-median(StepsPerDay1$steps)
 MeanOfStepsPerDay1<-mean(StepsPerDay1$steps)
 ```
-The mean of Total steps per day is **`r MeanOfStepsPerDay1`**
+The mean of Total steps per day is **1.0766 &times; 10<sup>4</sup>**
 
-The median of Total steps per day is **`r MedianOfStepsPerDay1`**
+The median of Total steps per day is **10765**
 
 
 
 ### Time-Series Plotting of Average steps taken in an interval over the 2-month time period
-```{r, echo=TRUE}
+
+```r
 AvgStepsinaInterval<-aggregate(steps~interval,ActivityData1,mean)
         
 with(AvgStepsinaInterval,plot(interval,steps,xlab="interval",ylab="average steps",
 main="Time-Series Plot of average steps taken in an interval",type="l"))
 ```
 
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
+
 
 ###Calculating 5-minute interval with the maximum number of steps
-```{r,echo=TRUE}
+
+```r
 x<-subset(AvgStepsinaInterval,steps==max(steps),select=interval)
 ```
-The 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps is **`r x`**
+The 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps is **835**
 
 
 ###Calculating the total number of missing values (coded as NA)
-```{r,echo=TRUE}
+
+```r
 totalmissing<-sum(is.na(ActivityData))
 ```
 The total number of missing values in the dataset 
-(i.e. the total number of rows with NAs) are **`r totalmissing`**
+(i.e. the total number of rows with NAs) are **2304**
 
 
 
@@ -68,7 +78,8 @@ The total number of missing values in the dataset
 Missing values are filled by Mean steps in a time-interval
 
 ### Code to Fill in Missing step values
-```{r, echo=TRUE}
+
+```r
 ActivityData2<-ActivityData
 for(i in 1:nrow(ActivityData2)){
     if (is.na(ActivityData2[i,1])== TRUE) {
@@ -80,38 +91,44 @@ ActivityData2[i,1]<- AvgStepsinaInterval[(AvgStepsinaInterval$interval==findinte
 
 
 ###Creating a data.frame with the total number of steps taken each day using after filling in missed values
-```{r, echo=TRUE}
+
+```r
 StepsPerDay2<-aggregate(steps~date,ActivityData2,sum)
 ```
 
 
 ###plotting Histogram of Total number of Steps taken each day after filling in missing values
-```{r,echo=TRUE}
+
+```r
 library(ggplot2)
 qplot(steps,data=StepsPerDay2,geom=("histogram"),binwidth=1000)
 ```
 
+![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10.png) 
+
 
 ###Mean and Median calculation
-```{r,echo=TRUE}
+
+```r
 MedianOfStepsPerDay2<-median(StepsPerDay2$steps)
 MeanOfStepsPerDay2<-mean(StepsPerDay2$steps)
 ```
-The mean of Total steps per day is **`r MeanOfStepsPerDay2`**
+The mean of Total steps per day is **1.0766 &times; 10<sup>4</sup>**
 
-The median of Total steps per day is **`r MedianOfStepsPerDay2`**
+The median of Total steps per day is **1.0766 &times; 10<sup>4</sup>**
 
 
 ###Differences in mean and median between data.frame with missing values for steps filled in vs data.frame with missing values for steps
 Mean Value difference from first part of the assignment is 
-**`r MeanOfStepsPerDay2-MeanOfStepsPerDay1`**
+**0**
 Median Value difference from first part of the assignment is 
-**`r MedianOfStepsPerDay2-MedianOfStepsPerDay1`**
+**1.1887**
 
 
 
 ###Finding Day of a week and Weekday or a weekend and adding the columns to filled-in activity data.frame
-```{r, echo=TRUE}
+
+```r
 ActivityData2$date<-as.POSIXct(ActivityData2$date)
 ActivityData2$day<-weekdays(ActivityData2$date)
 
@@ -144,16 +161,20 @@ for (i in 1:nrow(ActivityData2)){
 
 
 ###Creating a dataframe with average steps taken for an interval and weekend or weekday
-```{r, echo=TRUE}
+
+```r
 daysAVG<-aggregate(x=ActivityData2[,c(-2,-3,-4,-5)],
 by=list(weekday=ActivityData2$V5,interval=ActivityData2$interval),FUN=mean, na.rm=T,simplify=T)
 ```
 
 
 ###Creating Time-Series plot for weekday and weekend days for an interval
-```{r, echo=TRUE}
+
+```r
 library(lattice)
 daysAVG<-transform(daysAVG,weekday=factor(weekday))
 xyplot(x~interval|weekday,data=daysAVG,layout=c(1,2),ylab="Avg Number of steps",type = "l")
 ```
+
+![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14.png) 
 
