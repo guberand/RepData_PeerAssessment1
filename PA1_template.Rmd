@@ -26,7 +26,7 @@ StepsPerDay1<-aggregate(steps~date,ActivityData1,sum)
 ###plotting Histogram of Total number of Steps taken per day over the 2-month period
 ```{r,echo=TRUE}
 library(ggplot2)
-qplot(steps,data=StepsPerDay1,geom=("histogram"),binwidth=1000)
+qplot(steps,data=StepsPerDay1,geom=("histogram"),binwidth=950)
 ```
 
 
@@ -45,8 +45,8 @@ The median of Total steps per day is **`r MedianOfStepsPerDay1`**
 ```{r, echo=TRUE}
 AvgStepsinaInterval<-aggregate(steps~interval,ActivityData1,mean)
         
-with(AvgStepsinaInterval,plot(interval,steps,xlab="interval",ylab="average steps",
-main="Time-Series Plot of average steps taken in an interval",type="l"))
+with(AvgStepsinaInterval,plot(interval,steps,xlab="interval",ylab="steps",
+main="Time-Series Plot of average steps taken per interval",type="l"))
 ```
 
 
@@ -90,7 +90,7 @@ StepsPerDay2<-aggregate(steps~date,ActivityData2,sum)
 ###plotting Histogram of Total number of Steps taken each day after filling in missing values
 ```{r,echo=TRUE}
 library(ggplot2)
-qplot(steps,data=StepsPerDay2,geom=("histogram"),binwidth=1000)
+qplot(steps,data=StepsPerDay2,geom=("histogram"),binwidth=950)
 ```
 
 
@@ -158,6 +158,6 @@ by=list(weekday=ActivityData2$V5,interval=ActivityData2$interval),FUN=mean, na.r
 ```{r, echo=TRUE}
 library(lattice)
 daysAVG<-transform(daysAVG,weekday=factor(weekday))
-xyplot(x~interval|weekday,data=daysAVG,layout=c(1,2),ylab="Avg Number of steps",type = "l")
+xyplot(x~interval|weekday,data=daysAVG,layout=c(1,2),ylab="Avg number of steps",type = "l")
 ```
 
