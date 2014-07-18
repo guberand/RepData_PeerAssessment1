@@ -1,6 +1,8 @@
 
 ##Title: "ReproducibleResearchPeerAssessment1"
 
+library(knitr)
+
 ###Reading the activity data
 
 ```r
